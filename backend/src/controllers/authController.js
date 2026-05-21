@@ -95,6 +95,7 @@ const socialOAuthCallback = async (req, res) => {
       getClientSocialCallbackUrl({
         success: "1",
         provider,
+        accessToken: result.accessToken,
       }),
     );
   } catch (error) {

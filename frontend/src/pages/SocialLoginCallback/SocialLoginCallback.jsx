@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import RouteLoading from "@/components/RouteLoading/RouteLoading";
 import { login } from "@/store/slices/userSlice";
-import api from "@/utils/api";
+import api, { ACCESS_TOKEN_STORAGE_KEY } from "@/utils/api";
 
 const getCallbackParams = () => {
   const searchParams = new URLSearchParams(window.location.search);
@@ -14,6 +14,7 @@ const getCallbackParams = () => {
     success: searchParams.get("success") || hashParams.get("success"),
     error: searchParams.get("error") || hashParams.get("error"),
     provider: searchParams.get("provider") || hashParams.get("provider"),
+    accessToken: searchParams.get("accessToken") || hashParams.get("accessToken"),
   };
 };
 
@@ -41,7 +42,7 @@ function SocialLoginCallback() {
     hasStartedRef.current = true;
 
     const completeSocialLogin = async () => {
-      const { error, success, provider } = getCallbackParams();
+      const { accessToken, error, success, provider } = getCallbackParams();
 
       if (error || success !== "1") {
         console.error("[auth][social-callback] login failed", {
@@ -66,6 +67,10 @@ function SocialLoginCallback() {
       try {
         localStorage.removeItem("authToken");
 
+        if (accessToken) {
+          localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
+        }
+
         const response = await api.get("/users/me");
         const user = normalizeUser(response.data?.data || response.data);
 
@@ -84,6 +89,7 @@ function SocialLoginCallback() {
 
         localStorage.removeItem("authToken");
         localStorage.removeItem("userInfo");
+        localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
 
         setMessage("소셜 로그인 정보를 가져오지 못했습니다.");
         navigate("/login", {
