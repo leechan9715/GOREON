@@ -1,0 +1,65 @@
+services:
+  - type: web
+    name: goreon-backend
+    runtime: node
+    plan: free
+    region: singapore
+    branch: dev
+    autoDeploy: true
+    buildCommand: cd backend && npm ci
+    startCommand: cd backend && npm start
+    healthCheckPath: /
+    buildFilter:
+      paths:
+        - backend/**
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CLIENT_ORIGIN
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB_NAME
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DNS_SERVERS
+        value: 1.1.1.1,8.8.8.8
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_REDIRECT_URI
+        sync: false
+      - key: KAKAO_CLIENT_ID
+        sync: false
+      - key: KAKAO_CLIENT_SECRET
+        sync: false
+      - key: KAKAO_REDIRECT_URI
+        sync: false
+      - key: NAVER_CLIENT_ID
+        sync: false
+      - key: NAVER_CLIENT_SECRET
+        sync: false
+      - key: NAVER_REDIRECT_URI
+        sync: false
+      - key: R2_ACCOUNT_ID
+        sync: false
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_BUCKET_NAME
+        sync: false
+      - key: R2_PUBLIC_BASE_URL
+        sync: false
+      - key: R2_REVIEW_IMAGE_PREFIX
+        value: review-images
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_RECOMMENDATION_MODEL
+        value: gpt-5.4-mini
+      - key: OPENAI_RECOMMENDATION_TIMEOUT_MS
+        value: 12000
+      - key: AI_RECOMMENDATION_CANDIDATE_LIMIT
+        value: 30
