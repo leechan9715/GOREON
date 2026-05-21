@@ -14,8 +14,8 @@ import api, { ACCESS_TOKEN_STORAGE_KEY } from "../../utils/api";
 import { formatPhoneNumber } from "../../utils/phoneNumber";
 
 const defaultLoginForm = {
-  email: "",
-  password: "",
+  email: "test@gmail.com",
+  password: "123456789",
 };
 
 const defaultRegisterForm = {
